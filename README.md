@@ -1,1 +1,1 @@
-![alt text](images/archi_overview.png)
+![](images/archi_overview.png)
