@@ -2,7 +2,7 @@ import argparse
 from typing import Any, List
 from prayers_times import PrayersTimesPage
 
-def main(arg_list: List[Any] = []) -> None:
+def main() -> None:
     parser = argparse.ArgumentParser(description='This is the main.py script for test')
     parser.add_argument('--url',action='store',dest='url',default=None,help='<Required> url link',required=True)
     results = parser.parse_args()
