@@ -1,5 +1,4 @@
 import argparse
-from typing import Any, List
 from prayers_times import PrayersTimesPage
 
 def main() -> None:
