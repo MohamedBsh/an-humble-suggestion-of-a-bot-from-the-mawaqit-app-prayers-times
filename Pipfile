@@ -9,6 +9,8 @@ ipython = "*"
 [dev-packages]
 requests = "*"
 bs4 = "*"
+pytest = "*"
+black = "*"
 
 [requires]
 python_version = "3.10"
