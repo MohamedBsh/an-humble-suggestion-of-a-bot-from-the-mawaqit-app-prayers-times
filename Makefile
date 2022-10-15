@@ -32,3 +32,5 @@ format-check: ## Black formater (check only for ci)
 
 format:  ## Autoformat project codebase with black
 	pipenv run black .
+
+control-quality-check: format-check test
