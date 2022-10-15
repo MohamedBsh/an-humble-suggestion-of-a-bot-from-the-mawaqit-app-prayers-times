@@ -1,0 +1,45 @@
+name: CI dofus
+
+on: ["pull_request"]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          architecture: "x64"
+
+      - name: Cache pipenv
+        uses: actions/cache@v2
+        id: cache-pipenv
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ runner.os }}-pipenv-${{ hashFiles('Pipfile.lock') }}  # The cache key depends on Pipfile.lock.
+
+      - name: Install pipenv
+        run: |
+          python -mpip install pipenv
+
+      - name: Install dependencies
+        if: steps.cache-pipenv.outputs.cache-hit != 'true'
+        run: |
+          make install-dependencies  # Install dependencies in pipenv virtual env
+
+      - name:  Black formater
+        run: |
+          pipenv run make format-check
+
+      - name: Run tests
+        run: |
+          pipenv run make test
