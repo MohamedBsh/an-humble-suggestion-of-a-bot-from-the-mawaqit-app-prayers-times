@@ -36,10 +36,7 @@ jobs:
         run: |
           make install-dependencies  # Install dependencies in pipenv virtual env
 
-      - name:  Black formater
+      - name:  Control quality check (test, black ..)
         run: |
           pipenv run make format-check
-
-      - name: Run tests
-        run: |
           pipenv run make test

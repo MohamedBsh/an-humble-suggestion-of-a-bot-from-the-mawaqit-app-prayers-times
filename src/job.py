@@ -9,6 +9,7 @@ class ScrapPrayersTimesPage:
     """
     pipenv run python3 src/job.py --url="https://mawaqit.net/fr/grande-mosquee-de-paris" --data="./data/output/prayers.json"
     """
+
     def __init__(self, url: str, data: json, year: str):
         self.url = url
         self.data = data
