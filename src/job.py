@@ -25,5 +25,5 @@ if __name__ == "__main__":
     parser.add_argument('--url', action='store', dest='url', default=None, help='<Required> url link', required=True)
     results = parser.parse_args()
     url = results.url
-    prayers = ScrapPrayersTimesPage()
+    prayers = ScrapPrayersTimesPage(url)
     prayers._write_to_json()
