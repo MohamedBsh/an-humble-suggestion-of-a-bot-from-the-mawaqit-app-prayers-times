@@ -1,4 +1,4 @@
-name: CI dofus
+name: CI telegram salat prayers reminder
 
 on: ["pull_request"]
 
