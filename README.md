@@ -8,9 +8,9 @@ As a Muslim, it is obligatory to pray 5 times a day in different prayers at spec
 - Mahgrib
 - Icha
 
-![](images/salats-schema.png)
+<img src="images/salats-schema.png" alt="drawing" width="350"/>
 
-as well as performing the Friday group prayer (Jumua) at the mosque.
+as well as performing the Friday group prayer (Jumua) at the mosque every week.
 
 To know the starting time of the prayer before the next prayers two solutions were offered to me:
 
