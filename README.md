@@ -23,7 +23,7 @@ By using telegram, you will receive a daily message with all the following infor
 
 - exact times of the 5 obligatory prayers
 - exact times of the 2 Friday prayer slots (first session : time_jumua_1 and second session : time_jumua_2)
-- iqama times (>= 0) : how many minutes between adhan (the call to prayer by the Imam and the beginning of the prayer)
+- iqama times (iqama_difference >= 0) : how many minutes between adhan (the call to prayer by the Imam and the beginning of the prayer)
 - shuruq: extra prayer in the morning after Fajr prayer (but highly recommended)
 
 # Technical Overview
