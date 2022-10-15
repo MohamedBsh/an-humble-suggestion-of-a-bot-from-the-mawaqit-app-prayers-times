@@ -21,7 +21,7 @@ jobs:
           architecture: "x64"
 
       - name: Cache pipenv
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-pipenv
         with:
           path: ~/.local/share/virtualenvs
