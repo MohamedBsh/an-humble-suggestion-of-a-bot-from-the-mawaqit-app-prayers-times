@@ -1,4 +1,4 @@
-name: CI dofus
+name: CI telegram salat prayers reminder
 
 on: ["pull_request"]
 
@@ -36,10 +36,7 @@ jobs:
         run: |
           make install-dependencies  # Install dependencies in pipenv virtual env
 
-      - name:  Black formater
+      - name:  Control quality check (test, black ..)
         run: |
-          pipenv run make format-check
+          pipenv run make control-quality-check
 
-      - name: Run tests
-        run: |
-          pipenv run make test
