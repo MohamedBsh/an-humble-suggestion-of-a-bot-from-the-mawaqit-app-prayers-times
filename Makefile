@@ -26,6 +26,7 @@ test: check-pipenv clean-test
 
 install-dependencies: clean-venv ## Install Python dependencies thanks to pipenv
 	pipenv install
+	pipenv install --dev
 
 format-check: ## Black formater (check only for ci)
 	pipenv run black --check .
