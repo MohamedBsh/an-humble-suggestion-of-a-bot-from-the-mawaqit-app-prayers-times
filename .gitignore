@@ -130,5 +130,5 @@ dmypy.json
 .pyre/
 
 # Personal stuff
-
 todo.txt
+output_prayers.json
