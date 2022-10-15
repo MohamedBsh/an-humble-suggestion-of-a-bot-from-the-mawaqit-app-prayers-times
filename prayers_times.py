@@ -33,13 +33,17 @@ class PrayersTimesPage:
         item = json.loads(item[1])
         return item["iqamaCalendar"]
 
-    def _get_jumua_time_first_session(self) -> str:
+    def _write_to_json(self) -> str:
         item = self.soup.find_all('script')
         item = str(item[0])
         item = item.split('var')
         item = item[8].split('\n')[0].split(';')[0].strip().split('confData = ')
-        item = json.loads(item[1])
-        return item["jumua"]
+        #item = json.loads(item[1])
+        file = open('output_prayers.json', 'w')
+        file.write(item[1])
+        file.close()
+        #json.dump(file, item)
+        #return item["jumua"]
 
     def _get_jumua_time_second_session(self) -> str:
         item = self.soup.find_all('script')

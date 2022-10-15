@@ -6,8 +6,8 @@ def main() -> None:
     parser.add_argument('--url',action='store',dest='url',default=None,help='<Required> url link',required=True)
     results = parser.parse_args()
     url = results.url
-    calendar = PrayersTimesPage(url)._get_calendar_times()
-    print(calendar)
+    PrayersTimesPage(url)._write_to_json()
+    #print(calendar)
 
 if __name__ == "__main__":
     main()
