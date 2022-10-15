@@ -30,7 +30,7 @@ By using telegram, you will receive a daily message with all the following infor
 
 ## Workflow
 
-![](images/archi_overview.png)
+![](images/archi.png)
 
 ## Data Modelling - Postgres
 
