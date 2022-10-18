@@ -30,21 +30,9 @@ class ScrapPrayersTimesPage:
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--url",
-        action="store",
-        dest="url",
-        default=None,
-        help="url link",
-        required=True,
-    )
-    parser.add_argument(
-        "--data",
-        action="store",
-        default=None,
-        help="json data path",
-        required=True,
-    )
+    parser.add_argument("-u", "--url", type=str, default=None)
+    parser.add_argument("-d", "--data", type=str, default=None)
+
     results = parser.parse_args()
     url = results.url
     data = results.data
