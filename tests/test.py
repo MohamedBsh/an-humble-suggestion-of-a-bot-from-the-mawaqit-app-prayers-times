@@ -3,7 +3,7 @@ from src.transform import get_info_times_by_day
 
 
 def test_pad_month_3_days_january():
-    data = json.load(open("tests/mock_data/sample-01-2022-3-days.json"))
+    data = json.load(open("tests/mock_data/calendar-sample-01-2022-3-days.json"))
     year = "2022"
     info_wanted = "calendar"
     assert get_info_times_by_day(data, info_wanted, year) == [
@@ -16,7 +16,7 @@ def test_pad_month_3_days_january():
 
 
 def test_pad_one_month_january():
-    data = json.load(open("tests/mock_data/sample-01-2022.json"))
+    data = json.load(open("tests/mock_data/calendar-sample-01-2022.json"))
     year = "2022"
     info_wanted = "calendar"
     assert get_info_times_by_day(data, info_wanted, year) == [
@@ -57,7 +57,7 @@ def test_pad_one_month_january():
 
 
 def test_get_info_times_by_day_two_months():
-    data = json.load(open("tests/mock_data/sample-01-02-2022.json"))
+    data = json.load(open("tests/mock_data/calendar-sample-01-02-2022.json"))
     year = "2022"
     info_wanted = "calendar"
     assert get_info_times_by_day(data, info_wanted, year) == [
