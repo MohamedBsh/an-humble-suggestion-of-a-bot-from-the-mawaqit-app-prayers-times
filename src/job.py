@@ -7,7 +7,7 @@ from transform import get_info_times_by_day
 
 class ScrapPrayersTimesPage:
     """
-    pipenv run python3 src/job.py --url="https://mawaqit.net/fr/grande-mosquee-de-paris" --data="./data/output/prayers.json"
+    pipenv run python3 src/job.py -u="https://mawaqit.net/fr/grande-mosquee-de-paris" -d="./data/output/prayers.json"
     """
 
     def __init__(self, url: str, data: json, year: str):
