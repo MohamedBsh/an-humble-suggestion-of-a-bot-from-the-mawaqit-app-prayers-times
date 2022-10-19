@@ -1,12 +1,5 @@
-def get_info_times_by_day(data, info_wanted: str, year: str):
-    times = []
-    for k in range(len(data[info_wanted])):
-        tmp_key_date = dict(
-            (key, year + "-" + str(k + 1).zfill(2) + "-" + key.zfill(2))
-            for key in data[info_wanted][k]
-        )
-        info_dict = dict(
-            [(tmp_key_date.get(k), v) for k, v in data[info_wanted][k].items()]
-        )
-        times.append(info_dict)
-    return times
+from datetime import datetime
+
+
+def get_info_times_prayers_by_day(data, year: int):
+    return [{'day': datetime(year, month+1, int(day)), 'name_prayers': ['Fajr', 'Shuruq', 'Dhouhr', 'Asr', 'Maghrib', 'Isha'], 'times': time} for month, month_values in enumerate(data["calendar"]) for day, time in month_values.items()]
