@@ -7,22 +7,21 @@ from transform import get_info_times_by_day
 
 class ScrapPrayersTimesPage:
     """
-    pipenv run python3 src/job.py --url="https://mawaqit.net/fr/grande-mosquee-de-paris" --data="./data/output/prayers.json"
+    pipenv run python3 src/job.py -u="https://mawaqit.net/fr/grande-mosquee-de-paris" -f="./data/output/prayers.json"
     """
 
-    def __init__(self, url: str, data: json, year: str):
+    def __init__(self, url: str, year: str):
         self.url = url
-        self.data = data
         self.page = requests.get(url)
         self.soup = BeautifulSoup(self.page.text, "html.parser")
         self.year = year
 
-    def _write_to_json(self) -> str:
+    def _write_to_json(self, filename: str) -> str:
         item = self.soup.find_all("script")
         item = str(item[0])
         item = item.split("var")
         item = item[8].split("\n")[0].split(";")[0].strip().split("confData = ")
-        file = open("data/output/prayers.json", "w")
+        file = open(filename, "w")
         file.write(item[1])
         file.close()
 
@@ -30,33 +29,24 @@ class ScrapPrayersTimesPage:
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--url",
-        action="store",
-        dest="url",
-        default=None,
-        help="url link",
-        required=True,
-    )
-    parser.add_argument(
-        "--data",
-        action="store",
-        default=None,
-        help="json data path",
-        required=True,
-    )
+    parser.add_argument("-u", "--url", type=str, default=None)
+    parser.add_argument("-f", "--filename", type=str, default=None)
+
     results = parser.parse_args()
     url = results.url
-    data = results.data
+    filename = results.filename
     YEAR = "2022"
     INFO_WANTED = "calendar"
 
-    prayers = ScrapPrayersTimesPage(url, data, YEAR)
+    prayers = ScrapPrayersTimesPage(url, YEAR)
 
     # EXTRACT
-    prayers._write_to_json()
+    prayers._write_to_json(filename)
 
-    data = json.load(open(data))
+    data = json.load(open(filename))
 
     # TRANSFORM
     output = get_info_times_by_day(data, INFO_WANTED, YEAR)
+
+    # df = pd.DataFrame.from_dict(output[0], orient='index', columns=['Fajr', 'Shuruq', 'Dhur', 'Asr', 'Magreb','Isha'])
+    # print(df)
