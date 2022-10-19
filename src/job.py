@@ -3,6 +3,8 @@ import requests
 from bs4 import BeautifulSoup
 import argparse
 from transform import get_info_times_by_day
+import pandas as pd
+from glom import glom
 
 
 class ScrapPrayersTimesPage:
@@ -48,3 +50,7 @@ if __name__ == "__main__":
 
     # TRANSFORM
     output = get_info_times_by_day(data, INFO_WANTED, YEAR)
+
+    #df = pd.DataFrame.from_dict(output[0], orient='index', columns=['Fajr', 'Shuruq', 'Dhur', 'Asr', 'Magreb','Isha'])
+    #print(df)
+
