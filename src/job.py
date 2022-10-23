@@ -2,7 +2,8 @@ import json
 import requests
 from bs4 import BeautifulSoup
 import argparse
-from transform import get_info_times_prayers_by_day
+from transform import get_info_times_prayers_by_day, get_iqama_times_prayers_by_day
+import pandas as pd
 
 
 class ScrapPrayersTimesPage:
@@ -45,5 +46,8 @@ if __name__ == "__main__":
     data = json.load(open(filename))
 
     # TRANSFORM
-    output = get_info_times_prayers_by_day(data, YEAR)
-    print(output)
+    output_info_times_prayers = get_info_times_prayers_by_day(data, YEAR)
+    output_iqama_times_prayers = get_iqama_times_prayers_by_day(data, YEAR)
+
+    df_info_times_prayers = pd.DataFrame(output_info_times_prayers).set_index(['day']).apply(pd.Series.explode).reset_index()
+    df_iqama_times_prayers = pd.DataFrame(output_iqama_times_prayers)
