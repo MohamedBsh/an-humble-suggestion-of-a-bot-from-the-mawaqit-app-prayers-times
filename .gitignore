@@ -130,3 +130,5 @@ dmypy.json
 
 # Personal stuff
 todo.txt
+
+data/output/prayers.json
