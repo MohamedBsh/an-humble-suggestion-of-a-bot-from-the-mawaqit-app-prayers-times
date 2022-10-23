@@ -50,4 +50,4 @@ if __name__ == "__main__":
     output_iqama_times_prayers = get_iqama_times_prayers_by_day(data, YEAR)
 
     df_info_times_prayers = pd.DataFrame(output_info_times_prayers).set_index(['day']).apply(pd.Series.explode).reset_index()
-    df_iqama_times_prayers = pd.DataFrame(output_iqama_times_prayers)
+    df_iqama_times_prayers = pd.DataFrame(output_iqama_times_prayers).explode('iqama_difference').explode('name_prayers')
