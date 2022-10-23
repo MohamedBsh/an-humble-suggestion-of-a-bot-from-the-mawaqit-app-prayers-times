@@ -2,7 +2,8 @@ import json
 import requests
 from bs4 import BeautifulSoup
 import argparse
-from transform import get_info_times_by_day
+from transform import get_info_times_prayers_by_day, get_iqama_times_prayers_by_day
+import pandas as pd
 
 
 class ScrapPrayersTimesPage:
@@ -10,7 +11,7 @@ class ScrapPrayersTimesPage:
     pipenv run python3 src/job.py -u="https://mawaqit.net/fr/grande-mosquee-de-paris" -f="./data/output/prayers.json"
     """
 
-    def __init__(self, url: str, year: str):
+    def __init__(self, url: str, year: int):
         self.url = url
         self.page = requests.get(url)
         self.soup = BeautifulSoup(self.page.text, "html.parser")
@@ -35,8 +36,7 @@ if __name__ == "__main__":
     results = parser.parse_args()
     url = results.url
     filename = results.filename
-    YEAR = "2022"
-    INFO_WANTED = "calendar"
+    YEAR = 2022
 
     prayers = ScrapPrayersTimesPage(url, YEAR)
 
@@ -46,4 +46,8 @@ if __name__ == "__main__":
     data = json.load(open(filename))
 
     # TRANSFORM
-    output = get_info_times_by_day(data, INFO_WANTED, YEAR)
+    output_info_times_prayers = get_info_times_prayers_by_day(data, YEAR)
+    output_iqama_times_prayers = get_iqama_times_prayers_by_day(data, YEAR)
+
+    df_info_times_prayers = pd.DataFrame(output_info_times_prayers).set_index(['day']).apply(pd.Series.explode).reset_index()
+    df_iqama_times_prayers = pd.DataFrame(output_iqama_times_prayers)
