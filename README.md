@@ -6,7 +6,7 @@ As a Muslim, it is obligatory to pray 5 times a day in different prayers at spec
 - Dhouhr
 - Asr
 - Mahgrib
-- Icha
+- Isha
 
 <img src="images/salats-schema.png" alt="drawing" width="350"/>
 
