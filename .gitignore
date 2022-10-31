@@ -132,3 +132,4 @@ dmypy.json
 todo.txt
 
 data/output/prayers.json
+data/output/salat_times.csv
