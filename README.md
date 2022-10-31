@@ -32,6 +32,8 @@ By using telegram, you will receive a daily message with all the following infor
 
 ![](images/archi.png)
 
-## Data Modelling - Postgres
+## Data Modelling
 
 ![](images/sample_data_modelling.png)
+
+- day and name_prayers are the IDs columns
