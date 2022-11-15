@@ -1,9 +1,0 @@
-inputs:
-
-  prayers:
-    path: data/inputs/output_prayers.csv
-    format: json
-
-output:
-  path: data/output
-  format: json
