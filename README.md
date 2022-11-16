@@ -37,3 +37,21 @@ By using telegram, you will receive a daily message with all the following infor
 ![](images/sample_data_modelling.png)
 
 - day and name_prayers are the IDs columns
+
+# Setup local
+
+```
+make install-dependencies
+```
+
+```
+airflow standalone
+```
+
+UI Airflow : [localhost:8080](localhost:8080)
+
+If needed, in `airflow/airflow.cfg` modify :
+
+```
+load_examples = False
+```
