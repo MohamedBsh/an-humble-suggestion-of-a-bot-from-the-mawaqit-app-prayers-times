@@ -42,8 +42,8 @@ def get_info_times_prayers_by_day(data, year):
                 prayers_info.append({'day': datetime(year, month, int(day)),
                                      'name_prayers': ['Fajr', 'Shuruq', 'Dhouhr', 'Asr', 'Maghrib', 'Isha'],
                                      'times_prayer': time})
-            except:  # ignore 29 febuary if it's not a bisextile year
-                pass
+            except ValueError:
+                print("We ignore 29 febuary if it's not a bisextile year!")
     return prayers_info
 
 
@@ -58,8 +58,8 @@ def get_iqama_times_prayers_by_day(data, year):
                 iqama_info.append({'day': datetime(year, month, int(day)),
                                    'name_prayers': ['Fajr', 'Shuruq', 'Dhouhr', 'Asr', 'Maghrib', 'Isha'],
                                    'iqama_difference': add_shuruq_iqama})
-            except:  # ignore 29 febuary if it's not a bisextile year
-                pass
+            except ValueError:
+                print("We ignore 29 febuary if it's not a bisextile year!")
     return iqama_info
 
 
