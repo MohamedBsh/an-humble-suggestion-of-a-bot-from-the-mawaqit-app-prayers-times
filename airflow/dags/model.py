@@ -1,7 +1,7 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, Column, String, Integer, Date
-
+from dataclasses import dataclass
 
 class Connection(object):
 
@@ -24,7 +24,6 @@ Base = declarative_base()
 def init_db(db_connection):
     engine = create_engine(db_connection)
     Base.metadata.create_all(bind=engine)
-
 
 class SalatTimes(Base):
     __tablename__ = 'salattimes'
