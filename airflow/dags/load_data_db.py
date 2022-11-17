@@ -13,11 +13,11 @@ def main(db_connection):
         csv_reader = csv.DictReader(csvf)
         for row in csv_reader:
             row_salat_times = SalatTimes(day=row['day'],
-                                name_prayers=row['name_prayers'],
-                                times_prayer=row['times_prayer'],
-                                iqama_difference=row['iqama_difference'],
-                                time_jumua_1=row['time_jumua_1'],
-                                time_jumua_2 =row['time_jumua_2'])
+                                         name_prayers=row['name_prayers'],
+                                         times_prayer=row['times_prayer'],
+                                         iqama_difference=row['iqama_difference'],
+                                         time_jumua_1=row['time_jumua_1'],
+                                         time_jumua_2=row['time_jumua_2'])
             data_insert.append(row_salat_times)
 
     connection = Connection(db_connection)

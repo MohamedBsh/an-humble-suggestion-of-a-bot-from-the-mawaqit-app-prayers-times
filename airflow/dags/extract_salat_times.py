@@ -22,10 +22,12 @@ def import_data():
 
 def transform_data(year):
     data_json = json.load(open(config.JSON_FILE_DIR))
-    output_info_times_prayers = _get_info_times_prayers_by_day(data_json, year)
-    output_iqama_times_prayers = _get_iqama_times_prayers_by_day(data_json, year)
-    df_info_times_prayers = pd.DataFrame(output_info_times_prayers).set_index(['day']).apply(pd.Series.explode).reset_index()
-    df_iqama_times_prayers = pd.DataFrame(output_iqama_times_prayers).set_index(['day']).apply(pd.Series.explode).reset_index()
+    output_info_times_prayers = get_info_times_prayers_by_day(data_json, year)
+    output_iqama_times_prayers = get_iqama_times_prayers_by_day(data_json, year)
+    df_info_times_prayers = pd.DataFrame(output_info_times_prayers).set_index(['day']).apply(
+        pd.Series.explode).reset_index()
+    df_iqama_times_prayers = pd.DataFrame(output_iqama_times_prayers).set_index(['day']).apply(
+        pd.Series.explode).reset_index()
     df_salat_times_enriched = pd.merge(df_info_times_prayers, df_iqama_times_prayers, on=["day", "name_prayers"])
     df_salat_times_enriched["time_jumua_1"] = data_json["jumua"]
     df_salat_times_enriched["time_jumua_2"] = data_json["jumua2"]
@@ -37,7 +39,9 @@ def get_info_times_prayers_by_day(data, year):
     for month, month_values in enumerate(data["calendar"], 1):
         for day, time in month_values.items():
             try:
-                prayers_info.append({'day': datetime(year, month, int(day)), 'name_prayers': ['Fajr', 'Shuruq', 'Dhouhr', 'Asr', 'Maghrib', 'Isha'], 'times_prayer': time})
+                prayers_info.append({'day': datetime(year, month, int(day)),
+                                     'name_prayers': ['Fajr', 'Shuruq', 'Dhouhr', 'Asr', 'Maghrib', 'Isha'],
+                                     'times_prayer': time})
             except:  # ignore 29 febuary if it's not a bisextile year
                 pass
     return prayers_info
@@ -49,10 +53,12 @@ def get_iqama_times_prayers_by_day(data, year):
         for day, iqamas in month_values.items():
             try:
                 iqamas_times = [int(iqama.replace('+', '')) for iqama in iqamas]
-                add_shuruq_iqama = iqamas_times[:] # we don't have iqama time for shuruq prayers, by default it's 0
+                add_shuruq_iqama = iqamas_times[:]  # we don't have iqama time for shuruq prayers, by default it's 0
                 add_shuruq_iqama.insert(1, 0)
-                iqama_info.append({'day': datetime(year, month, int(day)), 'name_prayers': ['Fajr', 'Shuruq', 'Dhouhr', 'Asr', 'Maghrib', 'Isha'], 'iqama_difference': add_shuruq_iqama})
-            except: # ignore 29 febuary if it's not a bisextile year
+                iqama_info.append({'day': datetime(year, month, int(day)),
+                                   'name_prayers': ['Fajr', 'Shuruq', 'Dhouhr', 'Asr', 'Maghrib', 'Isha'],
+                                   'iqama_difference': add_shuruq_iqama})
+            except:  # ignore 29 febuary if it's not a bisextile year
                 pass
     return iqama_info
 
