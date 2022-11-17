@@ -7,13 +7,7 @@ from datetime import datetime
 import config
 
 
-"""
-pipenv run python3 src/job.py -u="https://mawaqit.net/fr/grande-mosquee-de-paris" -f="./data/output/prayers.json"
-pipenv run python3 airflow/dags/salat_times_ingestion.py --year="2022"
-"""
-
-
-def _import_data():
+def import_data():
     url = config.SALAT_TIMES_API
     page = requests.get(url)
     soup = BeautifulSoup(page.text, "html.parser")
@@ -26,7 +20,7 @@ def _import_data():
     file.close()
 
 
-def _transform_data(year):
+def transform_data(year):
     data_json = json.load(open(config.JSON_FILE_DIR))
     output_info_times_prayers = _get_info_times_prayers_by_day(data_json, year)
     output_iqama_times_prayers = _get_iqama_times_prayers_by_day(data_json, year)
@@ -38,7 +32,7 @@ def _transform_data(year):
     return df_salat_times_enriched
 
 
-def _get_info_times_prayers_by_day(data, year: int):
+def get_info_times_prayers_by_day(data, year):
     prayers_info = []
     for month, month_values in enumerate(data["calendar"], 1):
         for day, time in month_values.items():
@@ -49,7 +43,7 @@ def _get_info_times_prayers_by_day(data, year: int):
     return prayers_info
 
 
-def _get_iqama_times_prayers_by_day(data, year: int):
+def get_iqama_times_prayers_by_day(data, year):
     iqama_info = []
     for month, month_values in enumerate(data["iqamaCalendar"], 1):
         for day, iqamas in month_values.items():
@@ -63,14 +57,14 @@ def _get_iqama_times_prayers_by_day(data, year: int):
     return iqama_info
 
 
-def _save_df_to_csv(df):
+def save_df_to_csv(df):
     df.to_csv(config.CSV_FILE_DIR, index=False)
 
 
 def main(year):
-    _import_data()
-    df = _transform_data(year)
-    _save_df_to_csv(df)
+    import_data()
+    df = transform_data(year)
+    save_df_to_csv(df)
 
 
 if __name__ == "__main__":
