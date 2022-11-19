@@ -133,3 +133,6 @@ todo.txt
 
 airflow/dags/datasets/ingest_salat_times/
 airflow/dags/datasets/output_salat_times/
+
+
+.idea/
