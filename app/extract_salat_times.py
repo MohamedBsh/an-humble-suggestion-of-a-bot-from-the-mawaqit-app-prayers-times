@@ -1,27 +1,26 @@
 import json
 import requests
 from bs4 import BeautifulSoup
-import argparse
 import pandas as pd
 from datetime import datetime
-import config
+from app.utils.config import config
 
 
 def import_data():
-    url = config.SALAT_TIMES_API
+    url = config["URL"]
     page = requests.get(url)
     soup = BeautifulSoup(page.text, "html.parser")
     item = soup.find_all("script")
     item = str(item[0])
     item = item.split("var")
     item = item[8].split("\n")[0].split(";")[0].strip().split("confData = ")
-    file = open(config.JSON_FILE_DIR, "w")
+    file = open(config["JSON_FILE"], "w")
     file.write(item[1])
     file.close()
 
 
-def transform_data(year):
-    data_json = json.load(open(config.JSON_FILE_DIR))
+def transform_data(year: int):
+    data_json = json.load(open(config["JSON_FILE"]))
     output_info_times_prayers = get_info_times_prayers_by_day(data_json, year)
     output_iqama_times_prayers = get_iqama_times_prayers_by_day(data_json, year)
     df_info_times_prayers = pd.DataFrame(output_info_times_prayers).set_index(['day']).apply(
@@ -34,7 +33,7 @@ def transform_data(year):
     return df_salat_times_enriched
 
 
-def get_info_times_prayers_by_day(data, year):
+def get_info_times_prayers_by_day(data, year: int):
     prayers_info = []
     for month, month_values in enumerate(data["calendar"], 1):
         for day, time in month_values.items():
@@ -47,7 +46,7 @@ def get_info_times_prayers_by_day(data, year):
     return prayers_info
 
 
-def get_iqama_times_prayers_by_day(data, year):
+def get_iqama_times_prayers_by_day(data, year: int):
     iqama_info = []
     for month, month_values in enumerate(data["iqamaCalendar"], 1):
         for day, iqamas in month_values.items():
@@ -64,17 +63,10 @@ def get_iqama_times_prayers_by_day(data, year):
 
 
 def save_df_to_csv(df):
-    df.to_csv(config.CSV_FILE_DIR, index=False)
+    df.to_csv(config["CSV_FILE"], index=False)
 
 
-def main(year):
+def main(year: int):
     import_data()
     df = transform_data(year)
     save_df_to_csv(df)
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--year", required=True, type=int)
-    args = parser.parse_args()
-    main(args.year)

@@ -1,5 +1,5 @@
 import argparse
-from model import Connection
+from app.model import Connection
 
 
 def main(db_connection):

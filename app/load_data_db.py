@@ -1,12 +1,11 @@
 import argparse
 import csv
-
-from model import Connection, SalatTimes
-import config
+from app.utils.config import config
+from app.model import Connection, SalatTimes
 
 
 def main(db_connection):
-    filename = config.CSV_FILE_DIR
+    filename = config["CSV_FILE"]
     data_insert = []
 
     with open(filename, encoding='utf-8') as csvf:
