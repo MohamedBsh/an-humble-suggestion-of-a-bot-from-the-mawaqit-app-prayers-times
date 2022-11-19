@@ -1,6 +1,5 @@
 import datetime
 from airflow import DAG
-from airflow.models.param import Param
 from airflow.operators.python import PythonOperator
 from app.extract_salat_times import main
 
@@ -20,13 +19,10 @@ with DAG(
         schedule_interval=None,
         catchup=False,
         params={
-            'year': Param(2022, type='integer'),
+            'year': 2022,
         }
 ) as dag:
-    def get_year() -> int:
-        return '{{ params.year }}'
 
-
-    ingest = PythonOperator(task_id="main_salat_times", op_args=[get_year()], python_callable=main, )
+    ingest = PythonOperator(task_id="main_salat_times", python_callable=main, op_args=("{{params.year}}",))
 
     ingest
