@@ -41,7 +41,7 @@ By using telegram, you will receive a daily message with all the following infor
 # Setup local
 
 ```
-make install-dependencies
+source install.sh
 ```
 
 ```
