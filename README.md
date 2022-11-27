@@ -55,3 +55,19 @@ If needed, in `airflow/airflow.cfg` modify :
 ```
 load_examples = False
 ```
+
+# Setup a database
+
+- Install a local postgres instance: (for macos) https://www.postgresql.org/download/macosx/
+
+- You can install a software allowing to visualize / query the data in a database (e.g DBeaver, Datagrip, pgadmin ..)
+
+- Create a database, and a username/password
+
+- GRANT ALL ON schema public TO username;
+
+# Airflow variables
+
+In UI Airflow, you can create Variables in Admin > Variables. We use it for our tasks.
+
+Create a Variable 'dev_connection':= postgresql://username:password@localhost:5432/namedb
