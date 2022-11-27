@@ -135,4 +135,9 @@ airflow/datasets/ingest_salat_times/
 airflow/datasets/output_salat_times/
 .idea/
 !**/dags
-!airflow/airflow.cfg
+airflow/airflow.cfg
+airflow/airflow.db
+airflow/airflow-webserver.pid
+airflow/standalone_admin_password.txt
+airflow/webserver_config.py
+airflow/logs

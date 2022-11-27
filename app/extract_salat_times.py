@@ -4,7 +4,10 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import datetime
 from app.utils.config import config
-
+import os
+os.environ["no_proxy"]="*"
+# see https://bugs.python.org/issue28342
+# and https://stackoverflow.com/questions/73582293/airflow-external-api-call-gives-negsignal-sigsegv-error
 
 def import_data():
     url = config["URL"]
@@ -38,7 +41,7 @@ def get_info_times_prayers_by_day(data, year: int):
     for month, month_values in enumerate(data["calendar"], 1):
         for day, time in month_values.items():
             try:
-                prayers_info.append({'day': datetime(year, month, int(day)),
+                prayers_info.append({'day': datetime(int(year), int(month), int(day)),
                                      'name_prayers': ['Fajr', 'Shuruq', 'Dhouhr', 'Asr', 'Maghrib', 'Isha'],
                                      'times_prayer': time})
             except ValueError:
@@ -54,7 +57,7 @@ def get_iqama_times_prayers_by_day(data, year: int):
                 iqamas_times = [int(iqama.replace('+', '')) for iqama in iqamas]
                 add_shuruq_iqama = iqamas_times[:]  # we don't have iqama time for shuruq prayers, by default it's 0
                 add_shuruq_iqama.insert(1, 0)
-                iqama_info.append({'day': datetime(year, month, int(day)),
+                iqama_info.append({'day': datetime(int(year), int(month), int(day)),
                                    'name_prayers': ['Fajr', 'Shuruq', 'Dhouhr', 'Asr', 'Maghrib', 'Isha'],
                                    'iqama_difference': add_shuruq_iqama})
             except ValueError:
