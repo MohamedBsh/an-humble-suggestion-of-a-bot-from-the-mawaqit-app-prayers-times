@@ -4,7 +4,7 @@ from app.utils.config import config
 from app.model import Connection, SalatTimes
 
 
-def main(db_connection):
+def load_data_to_db(db_connection):
     filename = config["CSV_FILE"]
     data_insert = []
 
@@ -26,8 +26,5 @@ def main(db_connection):
     session.close()
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--connection", required=True, type=str)
-    args = parser.parse_args()
-    main(args.connection)
+def load(connection: str):
+    load_data_to_db(connection)

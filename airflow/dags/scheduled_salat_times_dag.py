@@ -2,8 +2,8 @@ import datetime
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from app.salat_times_ingestion import main
-from airflow.operators.bash import BashOperator
 from airflow.models import Variable
+from app.salat_times_to_db import load
 
 default_args = {
     "owner": "Bsh",
@@ -24,10 +24,7 @@ with DAG(
 ) as dag:
 
     ingest = PythonOperator(task_id="main_salat_times", python_callable=main, op_args=("{{params.year}}",))
-    load_to_db = BashOperator(
-        task_id='export_data_to_db',
-        bash_command='python3 app/salat_times_to_db.py '
-                     '--connection %s' % Variable.get("dev_connection")
-    )
+    load_to_db = PythonOperator(task_id="export_data_to_db", python_callable=load, op_args=(
+        Variable.get("dev_connection"),))
 
     ingest >> load_to_db
