@@ -36,7 +36,7 @@ jobs:
         run: |
           make install-dependencies  # Install dependencies in pipenv virtual env
 
-      #- name:  Control quality check (test, black ..)
-      #  run: |
-      #    pipenv run make control-quality-check
+      - name:  Control quality check (test, black ..)
+        run: |
+          pipenv run make control-quality-check
 
