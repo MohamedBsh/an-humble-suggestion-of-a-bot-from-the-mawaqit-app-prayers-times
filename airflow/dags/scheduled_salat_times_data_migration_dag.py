@@ -1,7 +1,8 @@
 import datetime
 from airflow import DAG
 from airflow.models import Variable
-from airflow.operators.bash import BashOperator
+from airflow.operators.python import PythonOperator
+from app.salat_times_data_migration import main
 
 default_args = {
     'owner': 'Bsh',
@@ -15,11 +16,8 @@ with DAG(
         description='Salat Times Migration',
         schedule_interval="@once",
         start_date=datetime.datetime(2022, 1, 1),
-        catchup=False
 ) as dag:
+    t1 = PythonOperator(task_id="salat_times_data_migration", python_callable=main, op_args=(
+        Variable.get("dev_connection"),))
 
-    t1 = BashOperator(
-        task_id='salat_times_migration',
-        bash_command='pipenv run python3 app/salat_times_data_migration.py '
-                     '--connection %s' % Variable.get("dev_connection")
-    )
+    t1

@@ -26,7 +26,7 @@ with DAG(
     ingest = PythonOperator(task_id="main_salat_times", python_callable=main, op_args=("{{params.year}}",))
     load_to_db = BashOperator(
         task_id='export_data_to_db',
-        bash_command='pipenv run python3 app/salat_times_to_db.py '
+        bash_command='python3 app/salat_times_to_db.py '
                      '--connection %s' % Variable.get("dev_connection")
     )
 

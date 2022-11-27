@@ -2,7 +2,7 @@ import argparse
 from app.model import Connection
 
 
-def main(db_connection):
+def migration(db_connection: str):
     connection = Connection(db_connection)
     session = connection.get_session()
     session.execute('''CREATE TABLE IF NOT EXISTS salattimes (
@@ -19,8 +19,5 @@ def main(db_connection):
     session.close()
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--connection", required=True, type=str)
-    args = parser.parse_args()
-    main(args.connection)
+def main(connection: str):
+    migration(connection)
