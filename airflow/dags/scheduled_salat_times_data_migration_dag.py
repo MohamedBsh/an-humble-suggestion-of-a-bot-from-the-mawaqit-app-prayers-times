@@ -18,10 +18,10 @@ with DAG(
     schedule_interval="@once",
     start_date=datetime.datetime(2022, 1, 1),
 ) as dag:
-    t1 = PythonOperator(
+    create_table = PythonOperator(
         task_id="salat_times_data_migration",
         python_callable=main,
         op_args=(Variable.get("dev_connection"),),
     )
 
-    t1
+    create_table
