@@ -4,10 +4,10 @@ from airflow.models import Variable
 from airflow.operators.bash import BashOperator
 
 default_args = {
-    'owner': 'airflow',
+    'owner': 'Bsh',
     'depends_on_past': False,
     'retries': 1,
-    "retry_delay": datetime.timedelta(minutes=3),
+    "retry_delay": datetime.timedelta(minutes=1),
 }
 with DAG(
         'salat_times_migration',
