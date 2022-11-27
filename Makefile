@@ -11,19 +11,19 @@ check-pipenv: ## Check that pipenv has been installed
 		exit 1; \
 	fi
 
-clean-venv: check-pipenv ## Remove any install Python virtual environment
+clean-venv: check-pipenv
 	pipenv --rm || echo "No virtualenv has been created yet; that is all good"
 	\rm -f Pipfile.lock
 
-format-check: ## Black formater and isort (check only for ci)
+format-check:
 	pipenv run black --check .
 	pipenv run isort . --check-only --profile black
 
-format:  ## Autoformat project codebase with black and isort
+format:
 	pipenv run black .
 	pipenv run isort . --profile black
 
-install-dependencies: clean-venv ## Install Python dependencies thanks to pipenv
+install-dependencies: clean-venv
 	source install.sh
 
 control-quality-check: format-check
