@@ -1,9 +1,10 @@
 import datetime
+
 from airflow import DAG
+from airflow.models import Variable
 from airflow.operators.python import PythonOperator
 from app.salat_times_ingestion import main
-from airflow.models import Variable
-from app.salat_times_to_db import load
+from app.salat_times_to_db import load_data_to_db
 
 default_args = {
     "owner": "Bsh",
@@ -14,17 +15,22 @@ default_args = {
 }
 
 with DAG(
-        dag_id="main_salat_times_pipeline",
-        start_date=datetime.datetime(2022, 1, 1),
-        schedule_interval=None,
-        catchup=False,
-        params={
-            'year': 2022,
-        }
+    dag_id="main_salat_times_pipeline",
+    start_date=datetime.datetime(2022, 1, 1),
+    schedule_interval=None,
+    catchup=False,
+    params={
+        "year": 2022,
+    },
 ) as dag:
 
-    ingest = PythonOperator(task_id="main_salat_times", python_callable=main, op_args=("{{params.year}}",))
-    load_to_db = PythonOperator(task_id="export_data_to_db", python_callable=load, op_args=(
-        Variable.get("dev_connection"),))
+    ingest = PythonOperator(
+        task_id="main_salat_times", python_callable=main, op_args=("{{params.year}}",)
+    )
+    load = PythonOperator(
+        task_id="export_data_to_db",
+        python_callable=load_data_to_db,
+        op_args=(Variable.get("dev_connection"),),
+    )
 
-    ingest >> load_to_db
+    ingest >> load
