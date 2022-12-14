@@ -38,6 +38,7 @@ By using telegram, you will receive a daily message with all the following infor
 
 - day and name_prayers are the IDs columns
 
+
 # Setup local
 
 ```
@@ -58,7 +59,7 @@ load_examples = False
 
 # Setup a database
 
-- Install a local postgres instance: (for macos) https://www.postgresql.org/download/macosx/
+- Install a local postgres instance(for macos): https://www.postgresql.org/download/macosx/
 
 - You can install a software allowing to visualize / query the data in a database (e.g DBeaver, Datagrip, pgadmin ..)
 

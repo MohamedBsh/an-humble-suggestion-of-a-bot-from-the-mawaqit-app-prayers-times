@@ -41,14 +41,16 @@ def transform_data(year: int):
     )
     df["time_jumua_1"] = data_json["jumua"]
     df["time_jumua_2"] = data_json["jumua2"]
+
     return df
 
 
 def get_info_day_times_by_calendar_type(data, year: int, calendar_type: str):
-    infos = []
+    infos_times = []
     for month, month_values in enumerate(data[calendar_type], 1):
         for day, times in month_values.items():
             try:
+                date = datetime(int(year), int(month), int(day))
                 if calendar_type == "iqamaCalendar":
                     info_type = "iqama_difference"
                     tmp = [int(iqama.replace("+", "")) for iqama in times]
@@ -64,9 +66,9 @@ def get_info_day_times_by_calendar_type(data, year: int, calendar_type: str):
                 print("We ignore 29 febuary if it's not a bisextile year!")
 
             finally:
-                infos.append(
+                infos_times.append(
                     {
-                        "day": datetime(int(year), int(month), int(day)),
+                        "day": date,
                         "name_prayers": [
                             "Fajr",
                             "Shuruq",
@@ -78,7 +80,7 @@ def get_info_day_times_by_calendar_type(data, year: int, calendar_type: str):
                         info_type: fields,
                     }
                 )
-    return infos
+    return infos_times
 
 
 def save_to_df(items):
