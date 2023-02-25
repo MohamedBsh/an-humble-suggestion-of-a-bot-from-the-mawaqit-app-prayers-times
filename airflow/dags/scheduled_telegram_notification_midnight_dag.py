@@ -52,7 +52,7 @@ def send_data_to_telegram():
 default_args = {
     "owner": "airflow",
     "depends_on_past": False,
-    "start_date": datetime(2022, 1, 1),
+    "start_date": datetime.now().replace(hour=0, minute=0, second=0, microsecond=0),
     "retries": 1,
     "retry_delay": timedelta(minutes=1)
 }
