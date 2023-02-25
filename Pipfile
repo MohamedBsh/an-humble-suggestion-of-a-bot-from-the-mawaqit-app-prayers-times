@@ -78,6 +78,6 @@ beautifulsoup4 = "~=4.11.1"
 black = "*"
 isort = "*"
 flake8 = "*"
+apache-airflow = {version = "==2.5.1", extras = ["postgres"]}
 backcall = "==0.2.0"
 psycopg2-binary = "==2.9.5"
-apache-airflow = {version = "==2.4.2", extras = ["postgres"]}
