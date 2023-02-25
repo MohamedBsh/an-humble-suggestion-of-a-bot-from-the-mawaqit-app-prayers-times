@@ -78,5 +78,5 @@ psycopg2-binary = "==2.9.5"
 black = "*"
 isort = "*"
 flake8 = "*"
-apache-airflow = {version = "==2.4.2", extras = ["postgres"]}
+apache-airflow = {version = "==2.5.1", extras = ["postgres"]}
 backcall = "==0.2.0"
