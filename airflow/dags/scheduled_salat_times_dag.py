@@ -9,18 +9,18 @@ from app.salat_times_to_db import load_data_to_db
 default_args = {
     "owner": "Bsh",
     "depends_on_past": False,
-    "start_date": datetime.date(2022, 1, 1),
+    "start_date": datetime.date(2023, 1, 1),
     "retries": 1,
     "retry_delay": datetime.timedelta(minutes=1),
 }
 
 with DAG(
         dag_id="main_salat_times_pipeline",
-        start_date=datetime.datetime(2022, 1, 1),
+        start_date=datetime.datetime(2023, 1, 1),
         schedule_interval=None,
         catchup=False,
         params={
-            "year": 2022,
+            "year": 2023,
         },
 ) as dag:
     ingest = PythonOperator(

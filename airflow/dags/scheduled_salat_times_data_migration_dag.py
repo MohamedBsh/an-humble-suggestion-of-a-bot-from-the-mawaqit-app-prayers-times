@@ -16,7 +16,7 @@ with DAG(
     default_args=default_args,
     description="Salat Times Migration",
     schedule_interval="@once",
-    start_date=datetime.datetime(2022, 1, 1),
+    start_date=datetime.datetime(2023, 1, 1),
 ) as dag:
     create_table = PythonOperator(
         task_id="salat_times_data_migration",

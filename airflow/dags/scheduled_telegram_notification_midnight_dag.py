@@ -19,7 +19,7 @@ db_config = {
 }
 
 # Define SQL query to fetch data for the current date
-SQL = "SELECT * FROM my_table WHERE day = %s;"
+SQL = "SELECT * FROM salattimes WHERE day = %s;"
 
 # Function to fetch data from Postgres and send it as a message to Telegram
 def send_data_to_telegram():
