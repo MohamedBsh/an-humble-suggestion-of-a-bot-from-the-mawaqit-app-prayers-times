@@ -12,19 +12,23 @@ As a Muslim, it is obligatory to pray 5 times a day in different prayers at spec
 
 as well as performing the Friday group prayer (Jumua) at the mosque every week.
 
-To know the starting time of the prayer before the next prayers two solutions were offered to me:
+To know the starting time of prayer, I had two solutions :
 
-- there are many applications on Google Store/Apple Store. Not wanting my personal data to be used by third party applications, I decided not to use them anymore.
+- there are many applications on Google Store/Apple Store. However, some of these applications had wrong prayer times, and I didn't want my data leaked by something other than third-party applications, so I decided not to use them anymore.
 - to go through websites, multiply the tabs within my smartphone and have to do the google search every time. This solution is boring.
 
-I decided to do this project to facilitate the daily life of people living in the Paris region and referring to the Paris mosque.
+I discovered the [Mawaqit association](https://mawaqit.net/fr/). This association aims to provide users with quality information through a website/app.
 
-By using telegram, you will receive a daily message with all the following information:
+As an avid telegram user, I decided to do this project to access this quality information and condense it within a telegram (RGPD-friendly) group.
+This solution will facilitate the daily life of people (telegram fans like me) living in the Paris area and referring to the Paris mosque.
 
-- exact times of the 5 obligatory prayers
-- exact times of the 2 Friday prayer slots (first session : time_jumua_1 and second session : time_jumua_2)
-- iqama times (iqama_difference >= 0) : how many minutes between adhan (the call to prayer by the Imam and the beginning of the prayer)
-- shuruq: extra prayer in the morning after Fajr prayer (but highly recommended)
+You will receive a daily message using my telegram bot with all the following information.
+
+- the exact times of the five obligatory prayers
+- exact times of the 2 Friday prayer slots (first session: time_jumua_1 and second session: time_jumua_2)
+- iqama time (iqama_difference >= 0): how many minutes between the adhan (the call to prayer by the Imam and the beginning of the prayer)
+- shuruq : additional prayer in the morning after the Fajr prayer (but highly recommended)
+- different duas in French and Arabic (when arriving at the mosque, after the adhan ..)
 
 # Technical Overview
 
