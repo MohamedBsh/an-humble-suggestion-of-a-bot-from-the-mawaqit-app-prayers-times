@@ -1,7 +1,7 @@
 import datetime
+import os
 
 from airflow import DAG
-from airflow.models import Variable
 from airflow.operators.python import PythonOperator
 from app.salat_times_data_migration import main
 
@@ -21,7 +21,10 @@ with DAG(
     create_table = PythonOperator(
         task_id="salat_times_data_migration",
         python_callable=main,
-        op_args=(Variable.get("dev_connection"),),
+        op_args=[
+            f'postgresql://{os.environ.get("DB_USER")}:{os.environ.get("DB_PASSWORD")}@{os.environ.get("DB_HOST")}:'
+            f'{os.environ.get("DB_PORT")}/{os.environ.get("DB_NAME")}'
+        ],
     )
 
     create_table
