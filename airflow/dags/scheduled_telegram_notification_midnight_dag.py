@@ -50,7 +50,7 @@ def send_data_to_telegram():
 
 # Define DAG parameters
 default_args = {
-    "owner": "airflow",
+    "owner": "Bsh",
     "depends_on_past": False,
     "start_date": datetime.now().replace(hour=0, minute=0, second=0, microsecond=0),
     "retries": 1,
