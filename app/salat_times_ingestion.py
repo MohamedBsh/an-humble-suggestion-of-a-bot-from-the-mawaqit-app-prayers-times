@@ -18,7 +18,7 @@ def import_data():
     page = requests.get(url)
     soup = BeautifulSoup(page.text, "html.parser")
     item = soup.find_all("script")
-    item = str(item[0])
+    item = str(item[1])
     item = item.split("var")
     item = item[8].split("\n")[0].split(";")[0].strip().split("confData = ")
     file = open(config["JSON_FILE"], "w")
@@ -62,10 +62,6 @@ def get_info_day_times_by_calendar_type(data, year: int, calendar_type: str):
                     fields = times
                     info_type = "times_prayer"
 
-            except ValueError:
-                print("We ignore 29 febuary if it's not a bisextile year!")
-
-            finally:
                 infos_times.append(
                     {
                         "day": date,
@@ -80,6 +76,10 @@ def get_info_day_times_by_calendar_type(data, year: int, calendar_type: str):
                         info_type: fields,
                     }
                 )
+
+            except ValueError:
+                print("Ignoring 29 February if it's not a leap year!")
+
     return infos_times
 
 

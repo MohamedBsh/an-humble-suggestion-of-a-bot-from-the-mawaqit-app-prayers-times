@@ -34,9 +34,9 @@ jobs:
       - name: Install dependencies
         if: steps.cache-pipenv.outputs.cache-hit != 'true'
         run: |
-          make install-dependencies  # Install dependencies in pipenv virtual env
+          make install-dependencies
 
-      - name:  Control quality check (test, black ..)
+      - name:  Control quality check
         run: |
           pipenv run make control-quality-check
 
