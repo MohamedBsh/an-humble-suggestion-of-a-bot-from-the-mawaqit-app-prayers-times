@@ -48,9 +48,6 @@ You will receive a daily message using my telegram bot with all the following in
 ```
 git clone -b enonce https://github.com/MohamedBsh/an-humble-suggestion-of-a-telegram-bot-from-the-mawaqit-app-prayers-times.git
 
-pipenv install
-pipenv shell
-
 sudo chmod +x ./install.sh
 source ./install.sh
 
@@ -75,8 +72,8 @@ load_examples = False
 
 - GRANT ALL ON schema public TO username;
 
+Create an .env file :
 ```
-Create .env file :
 export DB_HOST=XXX
 export DB_PORT=XXX
 export DB_NAME=XXX
