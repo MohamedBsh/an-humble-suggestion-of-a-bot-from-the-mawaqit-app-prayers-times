@@ -46,10 +46,14 @@ You will receive a daily message using my telegram bot with all the following in
 # Setup local
 
 ```
-source install.sh
-```
+git clone -b enonce https://github.com/MohamedBsh/an-humble-suggestion-of-a-telegram-bot-from-the-mawaqit-app-prayers-times.git
 
-```
+pipenv install
+pipenv shell
+
+sudo chmod +x ./install.sh
+source ./install.sh
+
 airflow standalone
 ```
 
@@ -71,8 +75,19 @@ load_examples = False
 
 - GRANT ALL ON schema public TO username;
 
+```
+Create .env file :
+export DB_HOST=XXX
+export DB_PORT=XXX
+export DB_NAME=XXX
+export DB_USER=XXX
+export DB_PASSWORD=XXX 
+```
+
 # Airflow variables
 
-In UI Airflow, you can create Variables in Admin > Variables. We use it for our tasks.
+In UI Airflow, you can create Variables in Admin > Variables. 
+We use it for our scheduled_telegram_notification_midnight dag.
+Create two Variables 'TELEGRAM_BOT_TOKEN' and 'TELEGRAM_CHAT_ID'.
 
-Create a Variable 'dev_connection':= postgresql://username:password@localhost:5432/namedb
+To get this information, download Telegram and chat with 'BotFather' to create the bot.
