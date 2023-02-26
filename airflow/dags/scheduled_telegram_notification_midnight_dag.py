@@ -50,15 +50,7 @@ def send_data_to_telegram():
         message_text += "{}\n".format(row)
 
     # Send message to Telegram bot
-    bot.send_message(chat_id=Variable.get("TELEGRAM_BOT_TOKEN"), text=message_text)
-
-
-@bot.message_handler(commands=['info'])
-def handle_today_command():
-    # Get current date in YYYY-MM-DD format
-    current_date = datetime.now().strftime("%Y-%m-%d")
-    send_data_to_telegram(current_date)
-
+    bot.send_message(chat_id=Variable.get("TELEGRAM_CHAT_ID"), text=message_text)
 
 # Define DAG parameters
 default_args = {
