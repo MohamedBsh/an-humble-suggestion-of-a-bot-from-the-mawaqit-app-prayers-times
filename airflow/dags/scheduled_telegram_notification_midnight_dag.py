@@ -5,9 +5,12 @@ from datetime import datetime
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from datetime import timedelta
+from airflow.models import Variable
+
+os.environ["no_proxy"] = "*"
 
 # Initialize Telegram bot with token
-bot = telebot.TeleBot(os.environ.get("TELEGRAM_TOKEN"))
+bot = telebot.TeleBot(Variable.get("TELEGRAM_BOT_TOKEN"))
 
 # Define database connection parameters
 db_config = {
@@ -20,6 +23,7 @@ db_config = {
 
 # Define SQL query to fetch data for the current date
 SQL = "SELECT * FROM salattimes WHERE day = %s;"
+
 
 # Function to fetch data from Postgres and send it as a message to Telegram
 def send_data_to_telegram():
@@ -46,7 +50,15 @@ def send_data_to_telegram():
         message_text += "{}\n".format(row)
 
     # Send message to Telegram bot
-    bot.send_message(chat_id=os.environ.get("TELEGRAM_CHAT_ID"), text=message_text)
+    bot.send_message(chat_id=Variable.get("TELEGRAM_BOT_TOKEN"), text=message_text)
+
+
+@bot.message_handler(commands=['info'])
+def handle_today_command():
+    # Get current date in YYYY-MM-DD format
+    current_date = datetime.now().strftime("%Y-%m-%d")
+    send_data_to_telegram(current_date)
+
 
 # Define DAG parameters
 default_args = {
@@ -58,16 +70,17 @@ default_args = {
 }
 
 # Define DAG object
-dag = DAG(
-    "send_data_to_telegram",
-    default_args=default_args,
-    description="Fetch data from Postgres and send it to MawaqitPrayersTimeParisBot",
-    schedule_interval="0 0 * * *"
-)
+with DAG(
+        "send_data_to_telegram",
+        default_args=default_args,
+        description="Fetch data from Postgres and send it to MawaqitPrayersTimeParisBot",
+        schedule_interval="0 0 * * *"
+) as dag:
+    # Define DAG tasks
+    send_data = PythonOperator(
+        task_id="send_data",
+        python_callable=send_data_to_telegram,
+        dag=dag
+    )
 
-# Define DAG tasks
-send_data = PythonOperator(
-    task_id="send_data",
-    python_callable=send_data_to_telegram,
-    dag=dag
-)
+    send_data
