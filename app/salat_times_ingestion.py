@@ -25,6 +25,7 @@ def import_data():
     file.write(item[1])
     file.close()
 
+
 def transform_data(year: int):
     data_json = json.load(open(config["JSON_FILE"]))
     output_info_times_prayers = get_info_day_times_by_calendar_type(
@@ -80,6 +81,7 @@ def get_info_day_times_by_calendar_type(data, year: int, calendar_type: str):
                 print("Ignoring 29 February if it's not a leap year!")
 
     return infos_times
+
 
 def save_to_df(items):
     df = pd.DataFrame(items).set_index(["day"]).apply(pd.Series.explode).reset_index()
