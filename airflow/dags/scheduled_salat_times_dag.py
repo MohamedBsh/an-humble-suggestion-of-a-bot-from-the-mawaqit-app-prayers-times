@@ -15,13 +15,13 @@ default_args = {
 }
 
 with DAG(
-        dag_id="main_salat_times_pipeline",
-        start_date=datetime.datetime(2023, 1, 1),
-        schedule_interval=None,
-        catchup=False,
-        params={
-            "year": 2023,
-        },
+    dag_id="main_salat_times_pipeline",
+    start_date=datetime.datetime(2023, 1, 1),
+    schedule_interval=None,
+    catchup=False,
+    params={
+        "year": 2023,
+    },
 ) as dag:
     ingest = PythonOperator(
         task_id="main_salat_times", python_callable=main, op_args=("{{params.year}}",)

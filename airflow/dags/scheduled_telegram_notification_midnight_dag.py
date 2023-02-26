@@ -1,11 +1,12 @@
 import os
+from datetime import datetime, timedelta
+
 import psycopg2
 import telebot
-from datetime import datetime
+
 from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
-from datetime import timedelta
 from airflow.models import Variable
+from airflow.operators.python_operator import PythonOperator
 
 os.environ["no_proxy"] = "*"
 
@@ -18,7 +19,7 @@ db_config = {
     "port": os.environ.get("DB_PORT"),
     "database": os.environ.get("DB_NAME"),
     "user": os.environ.get("DB_USER"),
-    "password": os.environ.get("DB_PASSWORD")
+    "password": os.environ.get("DB_PASSWORD"),
 }
 
 # Define SQL query to fetch data for the current date
@@ -52,27 +53,26 @@ def send_data_to_telegram():
     # Send message to Telegram bot
     bot.send_message(chat_id=Variable.get("TELEGRAM_CHAT_ID"), text=message_text)
 
+
 # Define DAG parameters
 default_args = {
     "owner": "Bsh",
     "depends_on_past": False,
     "start_date": datetime.now().replace(hour=0, minute=0, second=0, microsecond=0),
     "retries": 1,
-    "retry_delay": timedelta(minutes=1)
+    "retry_delay": timedelta(minutes=1),
 }
 
 # Define DAG object
 with DAG(
-        "send_data_to_telegram",
-        default_args=default_args,
-        description="Fetch data from Postgres and send it to MawaqitPrayersTimeParisBot",
-        schedule_interval="0 0 * * *"
+    "send_data_to_telegram",
+    default_args=default_args,
+    description="Fetch data from Postgres and send it to MawaqitPrayersTimeParisBot",
+    schedule_interval="0 0 * * *",
 ) as dag:
     # Define DAG tasks
     send_data = PythonOperator(
-        task_id="send_data",
-        python_callable=send_data_to_telegram,
-        dag=dag
+        task_id="send_data", python_callable=send_data_to_telegram, dag=dag
     )
 
     send_data
