@@ -4,7 +4,6 @@ clean-venv:
 
 format-check:
 	pipenv run black --check .
-	pipenv run isort . --check-only --profile black
 
 format:
 	pipenv run black .
