@@ -8,6 +8,9 @@ import tabulate
 from airflow import DAG
 from airflow.models import Variable
 from airflow.operators.python_operator import PythonOperator
+from app.utils.config import config
+import requests
+from bs4 import BeautifulSoup
 
 os.environ["no_proxy"] = "*"
 
@@ -67,9 +70,23 @@ def send_data_to_telegram():
     # Use tabulate to format the data as a table
     table = tabulate.tabulate(data_without_columns, headers=headers)
 
+    # Make a request to an other web page to extract duaas text
+
+    DUAAS_PATH = config["DUAAS_URL"]
+    response = requests.get(DUAAS_PATH)
+    html_content = response.content
+
+    # Parse the HTML content with BeautifulSoup
+    soup = BeautifulSoup(html_content, 'html.parser')
+
     # Prepare message text
     message_text = "Horaires de prières pour {}:\n\n".format(current_date)
     message_text += "```\n{}\n```".format(table)
+
+    for h2_tag in soup.find_all('h2'):
+        message_text += f'\n\n{h2_tag.text}\n'
+        for p_tag in h2_tag.find_next_sibling('div').find_all('p'):
+            message_text += f'{p_tag.text}\n'
 
     message_text += "\n\nJumuaa - Créneau 1: {}".format(JUMUA_SESSION_1_VALUE)
     message_text += "\nJumuaa - Créneau 2: {}".format(JUMUA_SESSION_2_VALUE)

@@ -1,3 +1,4 @@
 URL: https://mawaqit.net/fr/grande-mosquee-de-paris
 JSON_FILE: airflow/datasets/ingest_salat_times/output.json
 CSV_FILE: airflow/datasets/ingest_salat_times/output.csv
+DUAAS_URL : https://citadelledumusulman.com/invocations-doua-appel-priere/

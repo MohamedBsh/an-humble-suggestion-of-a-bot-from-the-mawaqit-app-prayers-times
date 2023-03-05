@@ -8,6 +8,7 @@ python_version = "3.10"
 
 [dev-packages]
 pytelegrambotapi = "*"
+tabulate = "*"
 
 [packages]
 appnope = "==0.1.3"
@@ -81,3 +82,4 @@ flake8 = "*"
 backcall = "==0.2.0"
 psycopg2-binary = "==2.9.5"
 apache-airflow = {version = "==2.4.2", extras = ["postgres"]}
+python-telegram-bot = "*"
