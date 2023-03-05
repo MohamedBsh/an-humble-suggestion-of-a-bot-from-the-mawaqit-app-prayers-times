@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 import psycopg2
 import telebot
+import tabulate
 
 from airflow import DAG
 from airflow.models import Variable
@@ -45,13 +46,36 @@ def send_data_to_telegram():
     cur.close()
     conn.close()
 
-    # Prepare message text
-    message_text = "Prayers Times for {}:\n".format(current_date)
+    headers = [desc[0] for desc in cur.description]
+    exclude_columns = [0, 4, 5]
+    headers = [h for i, h in enumerate(headers) if i not in exclude_columns]
+    data_without_columns = [[row[i] for i in range(len(row)) if i not in exclude_columns] for row in data]
+
+    # display the first occurence of jumua time (session 1 and session 2).
+    JUMUA_SESSION_1_INDEX = 4
+    JUMUA_SESSION_2_INDEX = 5
+    JUMUA_SESSION_1_VALUE = ""
+    JUMUA_SESSION_2_VALUE = ""
     for row in data:
-        message_text += "{}\n".format(row)
+        if JUMUA_SESSION_1_VALUE == "" and row[JUMUA_SESSION_1_INDEX]:
+            JUMUA_SESSION_1_VALUE = row[JUMUA_SESSION_1_INDEX]
+        if JUMUA_SESSION_2_VALUE == "" and row[JUMUA_SESSION_2_INDEX]:
+            JUMUA_SESSION_2_VALUE = row[JUMUA_SESSION_2_INDEX]
+        if JUMUA_SESSION_1_VALUE != "" and JUMUA_SESSION_2_VALUE != "":
+            break
+
+    # Use tabulate to format the data as a table
+    table = tabulate.tabulate(data_without_columns, headers=headers)
+
+    # Prepare message text
+    message_text = "Horaires de prières pour {}:\n\n".format(current_date)
+    message_text += "```\n{}\n```".format(table)
+
+    message_text += "\n\nJumuaa - Créneau 1: {}".format(JUMUA_SESSION_1_VALUE)
+    message_text += "\nJumuaa - Créneau 2: {}".format(JUMUA_SESSION_2_VALUE)
 
     # Send message to Telegram bot
-    bot.send_message(chat_id=Variable.get("TELEGRAM_CHAT_ID"), text=message_text)
+    bot.send_message(chat_id=Variable.get("TELEGRAM_CHAT_ID"), text=message_text, parse_mode="markdown")
 
 
 # Define DAG parameters
