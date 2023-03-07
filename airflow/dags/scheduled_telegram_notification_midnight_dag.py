@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import psycopg2
 import telebot
 import tabulate
+import pytz
 
 from airflow import DAG
 from airflow.models import Variable
@@ -36,10 +37,17 @@ def send_data_to_telegram():
     conn = psycopg2.connect(**db_config)
     cur = conn.cursor()
 
-    # Get the current date
-    now = datetime.now()
+    # Get the current date and time with the local timezone
+    tz = pytz.timezone("YOUR_TIMEZONE")  # replace with your timezone
+    now = datetime.now(tz)
+
     # Get current date in YYYY-MM-DD format
     current_date = datetime.now().strftime("%Y-%m-%d")
+
+    # Determine if it's winter time
+    winter_start_date = datetime(now.year, 11, 1, tzinfo=tz)
+    winter_end_date = datetime(now.year + 1, 3, 31, tzinfo=tz)
+    is_winter_time = winter_start_date <= now < winter_end_date
 
     # Execute SQL query to fetch data for the current date
     cur.execute(SQL, (current_date,))
@@ -76,6 +84,11 @@ def send_data_to_telegram():
     message_text = "Horaires de prières pour {}:\n\n".format(current_date)
     message_text += "```\n{}\n```".format(table)
 
+    # Decrease Jumuaa time by one hour if it's Friday and in winter time
+    if now.weekday() == 4 and is_winter_time:
+        JUMUA_SESSION_1_VALUE -= datetime.timedelta(hours=1)
+        JUMUA_SESSION_2_VALUE -= datetime.timedelta(hours=1)
+
     # Check if it's Friday to display the "Jumuaa - Créneau" information
     if now.weekday() == 4:
         message_text += "\n\nJumuaa - Créneau 1: {}".format(JUMUA_SESSION_1_VALUE)
@@ -84,8 +97,7 @@ def send_data_to_telegram():
     # Send message to Telegram bot
     bot.send_message(chat_id=Variable.get("TELEGRAM_CHAT_ID"), text=message_text, parse_mode="markdown")
 
-    # Make a request to an other web page to extract duaas text
-
+    # Make a request to another web page to extract duaas text
     DUAAS_PATH = config["DUAAS_URL"]
     response = requests.get(DUAAS_PATH)
     html_content = response.content
@@ -93,12 +105,13 @@ def send_data_to_telegram():
     # Parse the HTML content with BeautifulSoup
     soup = BeautifulSoup(html_content, 'html.parser')
 
-    message_text_duaas = "Le rappel profite au croyant. Voici quelques duaas à avoir en tête:\n\n"
+    message_text_duaas = "```\n\n\n```"
+    message_text_duaas += "Le rappel profite au croyant. Voici quelques duaas importantes:"
 
     for h2_tag in soup.find_all('h2'):
         message_text_duaas += f'\n\n{h2_tag.text}\n'
         for p_tag in h2_tag.find_next_sibling('div').find_all('p'):
-            message_text += f'{p_tag.text}\n'
+            message_text_duaas += f'{p_tag.text}\n'
 
     bot.send_message(chat_id=Variable.get("TELEGRAM_CHAT_ID"), text=message_text_duaas, parse_mode="markdown")
 
