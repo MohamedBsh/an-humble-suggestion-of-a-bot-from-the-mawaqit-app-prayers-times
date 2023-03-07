@@ -37,7 +37,7 @@ def send_data_to_telegram():
     cur = conn.cursor()
 
     # Get the current date
-    now = datetime.datetime.now()
+    now = datetime.now()
     # Get current date in YYYY-MM-DD format
     current_date = datetime.now().strftime("%Y-%m-%d")
 
@@ -72,6 +72,18 @@ def send_data_to_telegram():
     # Use tabulate to format the data as a table
     table = tabulate.tabulate(data_without_columns, headers=headers)
 
+    # Prepare message text
+    message_text = "Horaires de prières pour {}:\n\n".format(current_date)
+    message_text += "```\n{}\n```".format(table)
+
+    # Check if it's Friday to display the "Jumuaa - Créneau" information
+    if now.weekday() == 4:
+        message_text += "\n\nJumuaa - Créneau 1: {}".format(JUMUA_SESSION_1_VALUE)
+        message_text += "\nJumuaa - Créneau 2: {}".format(JUMUA_SESSION_2_VALUE)
+
+    # Send message to Telegram bot
+    bot.send_message(chat_id=Variable.get("TELEGRAM_CHAT_ID"), text=message_text, parse_mode="markdown")
+
     # Make a request to an other web page to extract duaas text
 
     DUAAS_PATH = config["DUAAS_URL"]
@@ -81,22 +93,14 @@ def send_data_to_telegram():
     # Parse the HTML content with BeautifulSoup
     soup = BeautifulSoup(html_content, 'html.parser')
 
-    # Prepare message text
-    message_text = "Horaires de prières pour {}:\n\n".format(current_date)
-    message_text += "```\n{}\n```".format(table)
+    message_text_duaas = "Le rappel profite au croyant. Voici quelques duaas à avoir en tête:\n\n"
 
     for h2_tag in soup.find_all('h2'):
-        message_text += f'\n\n{h2_tag.text}\n'
+        message_text_duaas += f'\n\n{h2_tag.text}\n'
         for p_tag in h2_tag.find_next_sibling('div').find_all('p'):
             message_text += f'{p_tag.text}\n'
 
-    # Check if it's Friday to display the "Jumuaa - Créneau" information
-    if now.weekday() == 4:
-        message_text += "\n\nJumuaa - Créneau 1: {}".format(JUMUA_SESSION_1_VALUE)
-        message_text += "\nJumuaa - Créneau 2: {}".format(JUMUA_SESSION_2_VALUE)
-
-    # Send message to Telegram bot
-    bot.send_message(chat_id=Variable.get("TELEGRAM_CHAT_ID"), text=message_text, parse_mode="markdown")
+    bot.send_message(chat_id=Variable.get("TELEGRAM_CHAT_ID"), text=message_text_duaas, parse_mode="markdown")
 
 
 # Define DAG parameters
@@ -110,10 +114,10 @@ default_args = {
 
 # Define DAG object
 with DAG(
-    "send_data_to_telegram",
-    default_args=default_args,
-    description="Fetch data from Postgres and send it to MawaqitPrayersTimeParisBot",
-    schedule_interval="0 0 * * *",
+        "send_data_to_telegram",
+        default_args=default_args,
+        description="Fetch data from Postgres and send it to MawaqitPrayersTimeParisBot",
+        schedule_interval="0 0 * * *",
 ) as dag:
     # Define DAG tasks
     send_data = PythonOperator(
