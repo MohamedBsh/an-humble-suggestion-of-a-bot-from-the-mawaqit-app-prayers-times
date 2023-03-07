@@ -36,6 +36,8 @@ def send_data_to_telegram():
     conn = psycopg2.connect(**db_config)
     cur = conn.cursor()
 
+    # Get the current date
+    now = datetime.datetime.now()
     # Get current date in YYYY-MM-DD format
     current_date = datetime.now().strftime("%Y-%m-%d")
 
@@ -88,8 +90,10 @@ def send_data_to_telegram():
         for p_tag in h2_tag.find_next_sibling('div').find_all('p'):
             message_text += f'{p_tag.text}\n'
 
-    message_text += "\n\nJumuaa - Créneau 1: {}".format(JUMUA_SESSION_1_VALUE)
-    message_text += "\nJumuaa - Créneau 2: {}".format(JUMUA_SESSION_2_VALUE)
+    # Check if it's Friday to display the "Jumuaa - Créneau" information
+    if now.weekday() == 4:
+        message_text += "\n\nJumuaa - Créneau 1: {}".format(JUMUA_SESSION_1_VALUE)
+        message_text += "\nJumuaa - Créneau 2: {}".format(JUMUA_SESSION_2_VALUE)
 
     # Send message to Telegram bot
     bot.send_message(chat_id=Variable.get("TELEGRAM_CHAT_ID"), text=message_text, parse_mode="markdown")
