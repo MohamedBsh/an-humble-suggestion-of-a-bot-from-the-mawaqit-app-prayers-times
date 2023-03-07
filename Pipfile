@@ -9,6 +9,7 @@ python_version = "3.10"
 [dev-packages]
 pytelegrambotapi = "*"
 tabulate = "*"
+pytz = "*"
 
 [packages]
 appnope = "==0.1.3"
