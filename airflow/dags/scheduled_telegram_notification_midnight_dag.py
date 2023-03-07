@@ -100,7 +100,11 @@ def send_data_to_telegram():
     # Make a request to another web page to extract duaas text
     DUAAS_PATH = config["DUAAS_URL"]
     response = requests.get(DUAAS_PATH)
-    html_content = response.content
+
+    if response.status_code == 404:
+        print("Error 404: Duaas not found")
+    else:
+        html_content = response.content
 
     # Parse the HTML content with BeautifulSoup
     soup = BeautifulSoup(html_content, 'html.parser')
