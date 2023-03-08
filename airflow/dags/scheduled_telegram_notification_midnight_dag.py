@@ -38,7 +38,7 @@ def send_data_to_telegram():
     cur = conn.cursor()
 
     # Get the current date and time with the local timezone
-    tz = pytz.timezone("YOUR_TIMEZONE")  # replace with your timezone
+    tz = pytz.timezone('Europe/Paris')  # replace with your timezone
     now = datetime.now(tz)
 
     # Get current date in YYYY-MM-DD format
